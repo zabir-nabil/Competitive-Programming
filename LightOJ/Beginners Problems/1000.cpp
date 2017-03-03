@@ -1,4 +1,4 @@
-//C++ 	0.000 	1088  Accepted
+//C++ 	0.000 	1088   Accepted
 #include<stdio.h>
 int main()
 {
