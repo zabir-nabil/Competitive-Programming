@@ -1,4 +1,4 @@
-//C++ 	0.028 	1588  Accepted 
+//
 #include <cstdio>
 #include <vector>
  
