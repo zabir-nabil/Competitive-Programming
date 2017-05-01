@@ -546,3 +546,5 @@ sg1 -> g[1] = 0, But 4 can have subgame sg3(1,3)
 Then, finally after calculating grundy number for each subgame of xi, we can calculate grundy number for xi, g[xi] = mex{for all subgames sgi : g[sgi]}
 
 Level 1.2
+
+...Stopped updating, can't find enough time :(
