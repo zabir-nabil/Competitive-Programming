@@ -1,3 +1,6 @@
+
+Solve count :- 151
+
 Part 1 : Ad Hoc
 
 Level 0 - < 1 :
@@ -547,4 +550,4 @@ Then, finally after calculating grundy number for each subgame of xi, we can cal
 
 Level 1.2
 
-...Stopped updating, can't find enough time :(
+...Stopped updating, ~find(enough_time) :(
