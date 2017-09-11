@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1505164632 source:a:\gitups\competitive-programming\contest upsolve\icpc practice contest - 1 (9.11.2017)\divisible subsequence poj 3844\main.cpp
+	<algorithm>
+	<stdio.h>
+	<math.h>
+	<set>
+	<vector>
+	<string>
+	<iostream>
+	<map>
+	<cstring>
+
