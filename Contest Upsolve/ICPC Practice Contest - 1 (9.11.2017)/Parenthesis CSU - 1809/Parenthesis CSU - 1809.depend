@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1505161853 source:a:\gitups\competitive-programming\contest upsolve\icpc practice contest - 1 (9.11.2017)\parenthesis csu - 1809\main.cpp
+	<algorithm>
+	<stdio.h>
+	<math.h>
+	<set>
+	<vector>
+	<string>
+	<iostream>
+
