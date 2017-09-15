@@ -113,7 +113,8 @@
 **Solution idea :**
 
  * At first lets see some cases,
- '''
+ 
+```
      n = 3, '456'
      i |  j  |  number
 	 1    1       456
@@ -124,6 +125,6 @@
 	 3    3       456
 	 ----------------
 	       sum = 3033
-  '''
+```
 
    
