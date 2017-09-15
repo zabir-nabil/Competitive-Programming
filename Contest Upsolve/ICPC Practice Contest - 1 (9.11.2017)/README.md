@@ -115,16 +115,37 @@
  * At first lets see some cases,
  
 ```
-     n = 3, '456'
-     i |  j  |  number
+  n = 3, '456'
+  i |  j  |  number
 	 1    1       456
 	 1    2       546
 	 1    3       654
 	 2    2       456
 	 2    3       465
 	 3    3       456
-	 ----------------
+	---------------------
 	       sum = 3033
 ```
 
+ * Try to calculate frequency of each digit in position [1,n]
+ * For position *i* there are 3 cases
+     1. dig[i] stays at its own place {for i=1, 456, 456, 465, 456}
+	 2. Some dig[j] replaces dig[i] where, i < j {some digit from right position replaces the current digit}
+	 3. Some dig[j] replaces dig[i] where, i > j {some digit from left position replaces the current digit}
+	 
+ * For case 1, ans is easy. ....XXXXXXXXX[C]YYYYYYY..
+   There are nx digits in the left of C, so ans += nxC2 ways - they can reverse and that won't affect C's position.
+   Similarly, there are ny digits in the right of C, so ans += nyC2 ways - they can reverse and that won't affect C's position.
+   For REV(i,i) C will be in it's own place, so ans += n
+   If we choose the following reverse operation, that won't affect C's position either.
+   XXX{X}[C]{Y}YYY, XX{X}X[C]Y{Y}YY, XX{X}XX[C]YY{Y}YY and so on, so ans += min (nx,ny) = min (i-1,n-i)
    
+ * For case 2, XXCXXXC'XX If, C' at position j is the symmetric point of C at position i about centre. Then, you can see all of the digits between this range will
+   replace dig[i] i times. (Of course if, i>n/2 then we don't have any symmetric point to the right)
+   So, ans += dig_sum[i+1,j]*10^i
+   
+   What about the positions j+1,j+2,..n. You can easily see, dig[n] will replace dig[i] once, dig[n-1] will replace dig[i] twice and so on.
+   So, keep an array LtoR[] = {.......,4*d4,3*d3,2*d2,1d1}
+   
+ * Similar as case 2
+    
