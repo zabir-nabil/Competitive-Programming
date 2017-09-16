@@ -13,7 +13,7 @@
  * Generate all possible numbers from the 'digit list' and check if it's prime.
  * To generate all possible numbers, first use bitmask to choose a set of digits and then permute them.
  
-*In my case, Bitwise sieve was too slow to pass*
+*In my case, Bitwise sieve was too slow to pass, sort the digit list before using next_permutation*
    
    
    
