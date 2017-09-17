@@ -1,6 +1,6 @@
 ## Solution Ideas
 
-Solve count :- 151
+Solve count :- 159
 
 Part 1 : Ad Hoc
 
