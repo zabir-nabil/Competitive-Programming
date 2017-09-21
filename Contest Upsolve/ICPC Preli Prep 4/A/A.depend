@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1505931870 source:a:\gitups\competitive-programming\contest upsolve\icpc preli prep 4\a\main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<algorithm>
+

@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 
 #define loop(i,s,e) for(int i = s;i<=e;i++) //including end point
@@ -15,9 +15,9 @@
 
 #define SZ(a) int(a.size())
 
-#define read() freopen("input.txt", "r", stdin)
+#define read() freopen("alibaba.in", "r", stdin)
 
-#define write() freopen("output.txt", "w", stdout)
+#define write() freopen("alibaba.out", "w", stdout)
 
 
 #define ms(a,b) memset(a, b, sizeof(a))
@@ -40,7 +40,7 @@
 
 #define sfulul(a,b) scanf("%llu %llu",&a,&b);
 
-#define osful2(a,b) scanf("%llu %llu",&a,&b); // A little different
+#define sful2(a,b) scanf("%llu %llu",&a,&b); // A little different
 
 #define sfc(a) scanf("%c",&a);
 
@@ -126,65 +126,106 @@ inline int clz(int N)   // O(1) way to calculate log2(X) (int s only)
 {
     return N ? 32 - __builtin_clz(N) : -INF;
 }
-int n,m;
-vector<int>poson[100005];
-vector<int>bn;
+int n;
+set< paii >kep;
+map<int,int>dtoi;
+int di[10005];
+int tin[10005];
+int del[10005];
 int main()
 {
-    while(cin>>n)
-    {
-        int k;
-        cin>>k;
+    //read();
+    //write();
 
-        while(k>0)
+    while(~scanf("%d",&n))
+    {
+        ms(del,0);
+        for(int i=1; i<=n; i++)
         {
-            bn.pb(k%2);
-            k/=2;
+            int dis,tm;
+
+            sfii(dis,tm);
+
+            di[i] = dis;
+            tin[i] = tm;
+            dtoi[ dis ] = i;
+
+            paii p = mp(tm,dis);
+
+            kep.insert(p);
+
         }
 
+
+        int lastds = 0;
+
+        paii bg = *(kep.begin());
+        lastds = bg.sc;
+
+        kep.erase(bg);
+        del[ dtoi[lastds] ] =1;
+
+        int totime = 0;
         int ans = 1;
 
-        int cnt = 1;
-        int fnt = n;
 
-        for(int i=0; i<bn.size(); i++)
+        for(int j=2; j<=n; j++)
         {
-            int bd = bn[i];
-            if(bd==0)
+            if(kep.empty())
+                break;
+            paii cn = *(kep.begin());
+            int cd = cn.sc;
+
+            int rt = abs(lastds - cd);
+
+            int ct = cn.fs;
+
+            ct-= totime;
+
+            if(rt>ct)
             {
-                if(cnt==n)
-                    cnt = 1;
-                poson[cnt].pb(i);
-                poson[++cnt].pb(i);
+                ans = 0;
+                break;
 
             }
             else
             {
-                if(fnt==1)
-                    fnt = n;
+                int si = dtoi[cd];
+                int ei = dtoi[lastds];
+                int sm = si+ei;
+                si = min(si,ei);
+                ei = sm-si;
+                for(int ii=si+1; ii<ei; ii++)
+                {
+                    if(del[ii]==0)
+                    {
+                        paii dl = mp(tin[ii],di[ii]);
+                        kep.erase(dl);
+                        del[ii] = 1;
 
-                poson[fnt].pb(i);
-                fnt--;
+                    }
+                }
+                kep.erase(cn);
+
+                del[ dtoi[cd] ] = 1;
+                totime += rt;
+                lastds = cd;
             }
+
         }
 
-
-        cout<<"YES"<<endl;
-
-
-        int xs = 0;
-        for(int i=1;i<n;i++)
+        if(ans)
         {
-            cout<<i<<" ";
-            xs^=i;
+            pf("%d\n",totime);
         }
-        xs^=k;
-        cout<<xs<<endl;
+        else
+        {
+            pf("No solution\n");
+        }
 
+        kep.clear();
 
-
-
-
+        dtoi.clear();
 
 
 
@@ -192,5 +233,5 @@ int main()
 
 
     return 0;
-}
 
+}

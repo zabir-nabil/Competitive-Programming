@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1506010223 source:a:\gitups\competitive-programming\contest upsolve\educational 29\a\main.cpp
+	<bits/stdc++.h>
+	<cstring>
+	<cmath>
+
