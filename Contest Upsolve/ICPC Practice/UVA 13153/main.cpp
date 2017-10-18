@@ -128,11 +128,33 @@ inline int clz(int N)   // O(1) way to calculate log2(X) (int s only)
 }
 int arr[100005];
 
+bool ist[1000005];
+
 bool isp[1000002];
 
-bool mark[1000002];
+int par[1000005];
 
-bool ist[1000003];
+bool mark[1000005];
+int f_par(int u)
+{
+    if(par[u]==u)
+        return u;
+
+    return par[u] = f_par(par[u]);
+}
+void union_f(int u,int v)
+{
+    int p1 = f_par(u);
+    int p2 = f_par(v);
+    if(p1<=p2)
+    {
+        par[p2] = par[p1];
+    }
+    else
+    {
+        par[p1] = par[p2];
+    }
+}
 int main()
 {
 
@@ -150,24 +172,35 @@ int main()
 
         ms(ist,0);
 
+        int mx = 0;
+        int ans = 0;
+
         for(int i=1; i<=n; i++)
         {
             sfi(arr[i]);
             //cout<<ist[i]<<endl;
-            ist[ arr[i] ]++;
+            ist[ arr[i] ]=1;
+            mx = max(mx,arr[i]);
+
+            if(arr[i]==1)
+                ans++;
         }
 
+
+
         ms(isp,0);
-        ms(mark,0);
 
-        int ans = 0;
+        for(int i=1;i<=mx;i++)
+            par[i] = i;
 
-        for(int i=2; i<=1000000; i++)
+
+
+        for(int i=2; i<=mx; i++)
         {
-            int cnt = 0;
+
             if(!isp[i])
             {
-                for(ll j=i+i; j<=1000000; j+=i)
+                for(ll j=i+i; j<=mx; j+=i)
                 {
 
                     int jp = j;
@@ -175,31 +208,39 @@ int main()
 
                     if(ist[jp])
                     {
-                        if(mark[jp])
-                        {
-                            cnt++;
-                        }
-                        else
-                        {
-                            mark[jp] = 1;
-                        }
+                        union_f(jp,i);
                     }
 
 
 
                 }
-                if(ist[i])
-                    mark[i] = 1;
-                if(ist[i] && cnt == 0)
+
+
+            }
+        }
+
+        ms(mark,0);
+
+
+        for(int i=1;i<=n;i++)
+        {
+            if(arr[i]==1)
+                continue;
+            else
+            {
+                int pr = f_par(arr[i]);
+                if(!mark[pr])
                 {
                     ans++;
-                }
-                else if(!ist[i] && cnt!=0)
-                {
-                    ans++;
+                    mark[ pr ] = 1;
+
                 }
             }
         }
+
+
+
+        ans = max(1,ans);
 
         CASE(cas);
 
