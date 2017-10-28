@@ -125,160 +125,49 @@ inline int clz(int N)   // O(1) way to calculate log2(X) (int s only)
 {
     return N ? 32 - __builtin_clz(N) : -INF;
 }
-struct node_inf
-{
-    int next_node, cap, rev_edge_idx;
-    node_inf(int nn,int c, int r)
-    {
-        this->next_node = nn;
-        this->cap = c;
-        this->rev_edge_idx = r;
-    }
-};
-vector<node_inf>adj[105];
-int max_flow;
-bool vis[105];
-pair<int,int>path[105];
-void bfs(int s,int t)
-{
-
-
-    while(true)
-    {
-        ms(vis,false);
-
-        queue<pair<int,int> >Q;
-        //the current node and its parent
-        //I will never go back to parent
-
-        Q.push(mp(s,-1));
-        vis[s] = 1;
-
-        int path_idx = 0;
-
-
-
-        bool done = false;
-
-        while(!Q.empty() && !done)
-        {
-            pair<int,int>un = Q.front();
-            Q.pop();
-            int u = un.fs;
-            int p = un.sc;
-
-            for(int i=0; i<adj[u].size(); i++)
-            {
-                node_inf vn = adj[u][i];
-
-                if(!vis[vn.next_node]
-                        && vn.next_node!=p
-                        && vn.cap>0)
-                {
-                    vis[vn.next_node] = 1;
-                    Q.push(mp(vn.next_node,u));
-                    path[vn.next_node]
-                        = mp(u,i);
-
-                    if(vn.next_node==t)
-                    {
-                        done = true;
-                        break;
-                    }
-                }
-            }
-
-
-
-
-
-
-        }
-
-        if(!done)
-            break;
-
-        int cn = t;
-
-        int min_path_cap = INF;
-
-        while(cn!=s)
-        {
-            paii pi = path[cn];
-
-            node_inf te = adj[pi.fs][pi.sc];
-
-            min_path_cap = min(min_path_cap,
-                               te.cap);
-
-            cn = pi.fs;
-
-        }
-
-        if(min_path_cap<=0)
-        {
-            break;
-        }
-
-        cn = t;
-
-        while(cn!=s)
-        {
-            paii pi = path[cn];
-            node_inf te = adj[pi.fs][pi.sc];
-
-            adj[pi.fs][pi.sc].cap -= min_path_cap;
-            adj[te.next_node][te.rev_edge_idx].cap
-            += min_path_cap;
-            cn = pi.fs;
-
-        }
-
-        max_flow += min_path_cap;
-
-
-
-    }
-
-
-}
+int ab[65];
+int bb[65];
 int main()
 {
-    int tc,cas=0;
+    int tc;
     sfi(tc);
     while(tc--)
     {
-        int n,s,t,e;
-        sfii(n,s);
-        sfii(t,e);
+        ll a,b;
+        sfll(a,b);
 
-        for(int i=1; i<=e; i++)
+        int idx = 60;
+
+        ms(ab,0);
+        ms(bb,0);
+
+        while(a>0)
         {
-            int a,b,cap;
-            sfii(a,b);
-            sfi(cap);
-            int sza = adj[a].size();
-            int szb = adj[b].size();
-
-            node_inf ni(b,cap,szb);
-            node_inf ni2(a,cap,sza);
-
-            adj[a].pb(ni);
-            adj[b].pb(ni2);
-
+            ab[idx] = a%10;
+            a/=10;
+            idx--;
         }
 
-        max_flow = 0;
+        idx = 60;
 
-        bfs(s,t);
-
-        CASE(cas);
-        pf("%d\n",max_flow);
-
-        for(int i=0; i<=n; i++)
+        while(b>0)
         {
-            adj[i].clear();
+            bb[idx] = b%10;
+            b/=10;
+            idx--;
         }
+        ll po = 1;
+        ll ans = 0;
+        for(int i=60; i>=1; i--)
+        {
+            ll c = ab[i] + bb[i];
+
+            ans += (c%10)*po;
+            po*=10;
+        }
+
+        pf("%lld\n",ans);
+
 
     }
 
