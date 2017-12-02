@@ -126,96 +126,117 @@ inline int clz(int N)   // O(1) way to calculate log2(X) (int s only)
 {
     return N ? 32 - __builtin_clz(N) : -INF;
 }
-int a[100005];
-ll grtlef[100005];
-ll smlrgt[100005];
-int tree[4*100005];
-void update(int root,int b,int e,int ai)
+int n,c;
+struct node
 {
-    if(b>ai || e<ai)
-        return;
-
-    if(b==e && b==ai)
+    ll sum,prop;
+    node()
     {
-        tree[root]+=1;
+        sum = 0;
+        prop = 0;
+    }
+};
+node tree[4*100005];
+void update(int root,int b,int e,int i,int j,ll v)
+{
+    if(b>j || e<i)
+    {
+        return;
+    }
+    if(b==e)
+    {
+       tree[root].sum+=v;
+       return;
+    }
+
+    if(b>=i && e<=j)
+    {
+        tree[root].prop += v;
+        ll addedsum = (e-b+1)*v;
+        tree[root].sum += addedsum;
         return;
     }
 
     int mid = (b+e)/2;
-    int leftc = root*2;
-    int rightc = leftc + 1;
+    int lc = root*2;
+    int rc = lc+1;
 
-    update(leftc,b,mid,ai);
-    update(rightc,mid+1,e,ai);
-    tree[root] = tree[leftc];
-    tree[root] += tree[rightc];
+    update(lc,b,mid,i,j,v);
+    update(rc,mid+1,e,i,j,v);
+
+    tree[root].sum = tree[lc].sum
+                     + tree[rc].sum
+                     + (e-b+1)*tree[root].prop;
 
 }
-int query(int root,int b,int e,int i,int j)
+ll query(int root,int b,int e,int i,int j,ll qp)
 {
     if(b>j || e<i)
+    {
         return 0;
+    }
 
     if(b>=i && e<=j)
-        return tree[root];
+    {
+        ll actual_sum = tree[root].sum;
+        ll prop_sum = (e-b+1)*qp;
+        return actual_sum + prop_sum;
+    }
 
     int mid = (b+e)/2;
-    int leftc = root*2;
-    int rightc = leftc + 1;
+    int lc = root*2;
+    int rc = lc+1;
 
-    int p1 = query(leftc,b,mid,i,j);
-    int p2 = query(rightc,mid+1,e,i,j);
+    ll p1 = query(lc,b,mid,i,j,qp+tree[root].prop);
+    ll p2 = query(rc,mid+1,e,i,j,qp+tree[root].prop);
 
-    return p1+p2;
-
-
-
-
-
+    return p1 + p2;
+}
+void null_tree()
+{
+    for(int i=1; i<=400000; i++)
+    {
+        tree[i].sum = 0;
+        tree[i].prop = 0;
+    }
 }
 int main()
 {
-    int n;
-    sfi(n);
-
-
-    for(int i=1; i<=n; i++)
+    int tc;
+    sfi(tc);
+    while(tc--)
     {
-        sfi(a[i]);
+
+        sfii(n,c);
+        null_tree();
+
+        while(c--)
+        {
+            int cmd;
+            sfi(cmd);
+            if(cmd==0)
+            {
+                int p,q;
+                sfii(p,q);
+                ll v;
+                sfl(v);
+                update(1,1,n,p,q,v);
+            }
+            else if(cmd==1)
+            {
+                int p,q;
+                sfii(p,q);
+                ll ans = query(1,1,n,p,q,0);
+                pf("%lld\n",ans);
+            }
+
+
+
+        }
+
+
+
     }
-
-    for(int i=1; i<=n; i++)
-    {
-        int ai = a[i];
-        if(ai<n)
-            grtlef[i] = query(1,1,n,ai+1,n);
-        update(1,1,n,ai);
-    }
-
-    ms(tree,0);
-
-    for(int i=n; i>=1; i--)
-    {
-        int ai = a[i];
-        if(ai>1)
-            smlrgt[i] = query(1,1,n,1,ai-1);
-        update(1,1,n,ai);
-    }
-
-    ll ans = 0;
-
-    for(int i=1; i<=n; i++)
-    {
-        //cout<<grtlef[i]<<" "<<smlrgt[i]<<endl;
-        ans+=(grtlef[i]*smlrgt[i]);
-    }
-
-    pf("%lld\n",ans);
-
-
-
-
-
 
     return 0;
 }

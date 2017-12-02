@@ -126,96 +126,53 @@ inline int clz(int N)   // O(1) way to calculate log2(X) (int s only)
 {
     return N ? 32 - __builtin_clz(N) : -INF;
 }
-int a[100005];
-ll grtlef[100005];
-ll smlrgt[100005];
-int tree[4*100005];
-void update(int root,int b,int e,int ai)
+int freq[1000];
+string bal;
+int get_base(char cc)
 {
-    if(b>ai || e<ai)
-        return;
-
-    if(b==e && b==ai)
+    if('0'<=cc && cc<='9')
     {
-        tree[root]+=1;
-        return;
+        return (cc-'0')+1;
+    }
+    if('A'<=cc && cc<='Z')
+    {
+        return (cc-'A')+11;
     }
 
-    int mid = (b+e)/2;
-    int leftc = root*2;
-    int rightc = leftc + 1;
-
-    update(leftc,b,mid,ai);
-    update(rightc,mid+1,e,ai);
-    tree[root] = tree[leftc];
-    tree[root] += tree[rightc];
-
-}
-int query(int root,int b,int e,int i,int j)
-{
-    if(b>j || e<i)
-        return 0;
-
-    if(b>=i && e<=j)
-        return tree[root];
-
-    int mid = (b+e)/2;
-    int leftc = root*2;
-    int rightc = leftc + 1;
-
-    int p1 = query(leftc,b,mid,i,j);
-    int p2 = query(rightc,mid+1,e,i,j);
-
-    return p1+p2;
-
-
-
-
+    if('a'<=cc && cc<='z')
+    {
+        return (cc-'a')+37;
+    }
 
 }
 int main()
 {
-    int n;
-    sfi(n);
-
-
-    for(int i=1; i<=n; i++)
+    int tc;
+    sfi(tc);
+    int cas = 0;
+    while(tc--)
     {
-        sfi(a[i]);
+        cin>>bal;
+        int ans = 0;
+        for(int i=0; i<bal.length(); i++)
+        {
+            if(bal[i]!='a')
+                ans = (ans^(bal[i]-'a'));
+        }
+
+        if(ans==0)
+        {
+            pf("Bob\n");
+        }
+        else
+        {
+            pf("Alice\n");
+        }
+
+
+
+
     }
-
-    for(int i=1; i<=n; i++)
-    {
-        int ai = a[i];
-        if(ai<n)
-            grtlef[i] = query(1,1,n,ai+1,n);
-        update(1,1,n,ai);
-    }
-
-    ms(tree,0);
-
-    for(int i=n; i>=1; i--)
-    {
-        int ai = a[i];
-        if(ai>1)
-            smlrgt[i] = query(1,1,n,1,ai-1);
-        update(1,1,n,ai);
-    }
-
-    ll ans = 0;
-
-    for(int i=1; i<=n; i++)
-    {
-        //cout<<grtlef[i]<<" "<<smlrgt[i]<<endl;
-        ans+=(grtlef[i]*smlrgt[i]);
-    }
-
-    pf("%lld\n",ans);
-
-
-
-
-
 
     return 0;
 }

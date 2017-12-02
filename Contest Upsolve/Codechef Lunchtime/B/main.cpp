@@ -126,96 +126,121 @@ inline int clz(int N)   // O(1) way to calculate log2(X) (int s only)
 {
     return N ? 32 - __builtin_clz(N) : -INF;
 }
-int a[100005];
-ll grtlef[100005];
-ll smlrgt[100005];
-int tree[4*100005];
-void update(int root,int b,int e,int ai)
+int M,X,Y;
+ll ar[1000005];
+int tree[4*1000005];
+void build(int root,int b,int e)
 {
-    if(b>ai || e<ai)
-        return;
-
-    if(b==e && b==ai)
+    if(b==e)
     {
-        tree[root]+=1;
+        tree[root] = 1;
         return;
     }
 
     int mid = (b+e)/2;
-    int leftc = root*2;
-    int rightc = leftc + 1;
+    int lc = root*2;
+    int rc = lc+1;
 
-    update(leftc,b,mid,ai);
-    update(rightc,mid+1,e,ai);
-    tree[root] = tree[leftc];
-    tree[root] += tree[rightc];
+    build(lc,b,mid);
+    build(rc,mid+1,e);
+
+    tree[root] = tree[lc] + tree[rc];
 
 }
-int query(int root,int b,int e,int i,int j)
+void update(int root,int b,int e,int i)
 {
-    if(b>j || e<i)
-        return 0;
+    if(b>i || e<i)
+        return;
 
-    if(b>=i && e<=j)
-        return tree[root];
+    if(b==e && b==i)
+    {
+        tree[root] = 0;
+        return;
+    }
 
     int mid = (b+e)/2;
-    int leftc = root*2;
-    int rightc = leftc + 1;
+    int lc = root*2;
+    int rc = lc+1;
 
-    int p1 = query(leftc,b,mid,i,j);
-    int p2 = query(rightc,mid+1,e,i,j);
+    update(lc,b,mid,i);
+    update(rc,mid+1,e,i);
 
-    return p1+p2;
+    tree[root] = tree[lc] + tree[rc];
 
 
+}
+int query(int root,int b,int e,int v)
+{
+    if(b==e)
+    {
+        return b;
+    }
 
+    int mid = (b+e)/2;
+    int lc = root*2;
+    int rc = lc+1;
+
+    int lv = tree[lc];
+    int rv = tree[rc];
+
+    if(lv>=v)
+    {
+        int qa = query(lc,b,mid,v);
+        return qa;
+    }
+    else
+    {
+        int qa = query(rc,mid+1,e,v-lv);
+        return qa;
+    }
 
 
 }
 int main()
 {
-    int n;
-    sfi(n);
-
-
-    for(int i=1; i<=n; i++)
+    int tc;
+    sfi(tc);
+    while(tc--)
     {
-        sfi(a[i]);
+
+        sfi(M);
+        sfii(X,Y);
+
+        for(int i=1; i<=M; i++)
+        {
+            ar[i] = i;
+        }
+
+        build(1,1,M);
+
+        int sz = M/2;
+
+        for(; sz>=2; sz-=1)
+        {
+            int idxdel = (sz*X)/Y;
+            idxdel++;
+            int idxdel2 = idxdel*2;
+            idxdel = idxdel2 - 1;
+            int loc1 = query(1,1,M,idxdel);
+            int loc2 = query(1,1,M,idxdel2);
+
+            ar[loc1] = 0;
+            ar[loc2] = 0;
+
+            update(1,1,M,loc1);
+            update(1,1,M,loc2);
+        }
+
+        ll xorans = 0;
+        for(int i=1; i<=M; i++)
+        {
+            xorans = (xorans^ar[i]);
+        }
+
+        pf("%lld\n",xorans);
+
+
     }
-
-    for(int i=1; i<=n; i++)
-    {
-        int ai = a[i];
-        if(ai<n)
-            grtlef[i] = query(1,1,n,ai+1,n);
-        update(1,1,n,ai);
-    }
-
-    ms(tree,0);
-
-    for(int i=n; i>=1; i--)
-    {
-        int ai = a[i];
-        if(ai>1)
-            smlrgt[i] = query(1,1,n,1,ai-1);
-        update(1,1,n,ai);
-    }
-
-    ll ans = 0;
-
-    for(int i=1; i<=n; i++)
-    {
-        //cout<<grtlef[i]<<" "<<smlrgt[i]<<endl;
-        ans+=(grtlef[i]*smlrgt[i]);
-    }
-
-    pf("%lld\n",ans);
-
-
-
-
-
 
     return 0;
 }
