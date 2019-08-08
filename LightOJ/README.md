@@ -1,5 +1,6 @@
 ## Solution Ideas
 
+```
 Solve count :- 159
 
 Part 1 : Ad Hoc
@@ -111,7 +112,8 @@ Don't make any typing mistake while copying symmetric code portions to reuse!
 37)1212 (Just simulate , Use STL deque for short code)
  Level : 0.5
 
-38)1241 (Easy Solution , but be careful about first length , What if initially , nose length is greater than 2 , greater than 5 ?)
+
+38)1241 (Easy Solution , but be careful about first length , What if initially , nose length is greater than 2 , greater than 5 ?)
  Level 0.4
 
 39)1414 (Lots of tricky cases , Find the number of leap years in between tow years by 
@@ -556,4 +558,5 @@ Then, finally after calculating grundy number for each subgame of xi, we can cal
 
 Level 1.2
 
+```
 >...Stopped updating, ~find(enough_time) :(
